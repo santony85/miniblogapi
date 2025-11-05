@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql');
+//const mysql = require('mysql');
 var session = require('client-sessions');
 
 
@@ -25,7 +25,33 @@ app.use(session({
  ephemeral: true
 }));
 
-var connection = mysql.createConnection({
+const mysql = require('mysql2');
+
+const DB_HOST=containers.railway.app
+const DB_USER=youruser
+const DB_PASSWORD=yourpassword
+const DB_NAME=yourdb
+const DB_PORT=3306
+
+
+const connection = mysql.createConnection({
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+  port: DB_PORT
+});
+
+connection.connect(err => {
+  if (err) {
+    console.error('Erreur de connexion à MySQL:', err);
+    return;
+  }
+  console.log('Connecté à la base MySQL Railway!');
+});
+
+
+/*var connection = mysql.createConnection({
     host     : '192.168.4.1',
     user     : 'sqlasantero',
     password : 'savary',
@@ -38,7 +64,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err){
     if(err)throw err;
     console.log("Connection ok")
-});
+});*/
 
 const now = new Date();
 const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
